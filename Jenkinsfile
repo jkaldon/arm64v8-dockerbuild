@@ -6,15 +6,15 @@ pipeline {
 
   agent {
     kubernetes {
-      label 'arm64v8-alpine'    // all your pods will be named with this prefix, followed by a unique id
-      defaultContainer 'alpine' // define a default container if more than a few stages use it, will default to jnlp container
+      label 'arm64v8-dockerbuild'
+      defaultContainer 'docker'
       yaml """
 apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: alpine
-    image: arm64v8/alpine:3.13
+  - name: docker
+    image: jkaldon/arm64v8-dockerbuild:alpine3.13
     command:
     - cat
     tty: true
@@ -29,9 +29,9 @@ spec:
     }
   }
   stages {
-    stage('Install docker') {
+    stage('printenv') {
       steps {
-        sh "apk add docker"
+        sh "printenv; exit 1"
       }
     }
     stage('Build image') {
