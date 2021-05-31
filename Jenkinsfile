@@ -6,7 +6,7 @@ pipeline {
 
   agent {
     kubernetes {
-      label 'arm64v8-dockerbuild'
+      inheritFrom 'jenkins-slave'
       defaultContainer 'docker'
       yaml """
 apiVersion: v1
