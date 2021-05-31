@@ -1,7 +1,7 @@
 pipeline {
   environment {
     def ARTIFACT = "jkaldon/arm64v8-dockerbuild"
-    def BUILD_VERSION = sh(script: "date -u +%Y%m%d", returnStdout: true).trim()
+    def BUILD_VERSION = sh(script: "echo `date -u +%Y%m%d`", returnStdout: true).trim()
   }
 
   agent {
