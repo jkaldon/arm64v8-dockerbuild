@@ -1,7 +1,7 @@
 pipeline {
   environment {
     ARTIFACT = "jkaldon/arm64v8-dockerbuild"
-    BUILD_VERSION = sh(script: "echo `date -u +%Y%m%d`", returnStdout: true).trim()
+    BUILD_VERSION = sh(script: "echo `date -u +%Y%m%d`-${BUILD_NUMBER}", returnStdout: true).trim()
   }
 
   agent {
@@ -31,7 +31,7 @@ spec:
   stages {
     stage('printenv') {
       steps {
-        sh "printenv; exit 1"
+        sh "printenv"
       }
     }
     stage('Build image') {
