@@ -29,11 +29,6 @@ spec:
     }
   }
   stages {
-    stage('printenv') {
-      steps {
-        sh "printenv"
-      }
-    }
     stage('Build image') {
       steps {
         sh 'docker build --network host --no-cache --pull -t "${ARTIFACT}:${BUILD_VERSION}" .'

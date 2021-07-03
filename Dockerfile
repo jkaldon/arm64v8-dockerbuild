@@ -7,5 +7,6 @@ LABEL org.opencontainers.image.source="https://github.com/jkaldon/arm64v8-docker
 
 RUN apk add --no-cache \
              bash \
-             docker
+             docker \
+             git
 
