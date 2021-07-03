@@ -36,7 +36,7 @@ spec:
     }
     stage('Build image') {
       steps {
-        sh "docker build --network host --no-cache --pull -t ${ARTIFACT}:${BUILD_VERSION} ."
+        sh 'docker build --network host --no-cache --pull -t "${ARTIFACT}:${BUILD_VERSION}" .'
       }
     }
     stage('Publish image') {
@@ -45,10 +45,10 @@ spec:
                           credentialsId: 'jenkins-dockerhub',
                           usernameVariable: 'DOCKER_HUB_USER',
                           passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
-          sh """
-            docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
-            docker push -t ${ARTIFACT}:${BUILD_VERSION}
-          """
+          sh '''
+            docker login -u "${DOCKER_HUB_USER}" -p "${DOCKER_HUB_PASSWORD}"
+            docker push "${ARTIFACT}:${BUILD_VERSION}"
+          '''
         }
       }
     }
