@@ -1,5 +1,9 @@
 #!/bin/sh
 set -x
 
-docker run --rm --privileged linuxkit/binfmt:v0.8
-docker buildx build --progress plain --no-cache --pull --platform linux/arm64 -t jkaldon/arm64v8-dockerbuild:alpine3.13 --push .
+DOCKER_TAG=alpine3.13-1
+
+docker build --progress plain -t "jkaldon/arm64v8-dockerbuild:${DOCKER_TAG}" .
+
+docker push "jkaldon/arm64v8-dockerbuild:${DOCKER_TAG}"
+

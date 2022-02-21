@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "arm64-dockerbuild.fullname" . }}
+  labels:
+    {{- include "arm64-dockerbuild.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "arm64-dockerbuild.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "arm64-dockerbuild.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "arm64-dockerbuild.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "cat -"]
+          tty: true
+          volumeMounts:
+            - name: docker-sock
+              mountPath: "/var/run/docker.sock"
+            - name: root-home
+              mountPath: /root
+            {{- if .Values.persistence.mounts }}
+            {{- toYaml .Values.persistence.mounts | nindent 12 }}
+            {{- end }}
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+      - name: root-home
+        persistentVolumeClaim:
+          claimName: {{ template "arm64-dockerbuild.fullname" . }}
+      {{- if .Values.persistence.volumes }}
+      {{- toYaml .Values.persistence.volumes | nindent 6 }}
+      {{- end }}
