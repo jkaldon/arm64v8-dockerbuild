@@ -1,4 +1,4 @@
-FROM docker.io/arm64v8/alpine:3.13
+FROM docker.io/arm64v8/alpine:3.15
 
 # Image metadata
 # git commit
@@ -15,5 +15,6 @@ RUN apk add --no-cache \
              git \
              vim && \
     curl 'https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3' | bash && \
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    curl -Lo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
+WORKDIR /root

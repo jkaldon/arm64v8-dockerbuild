@@ -27,12 +27,13 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+          resources: {{- toYaml .Values.image.resources | nindent 12 }}
+          securityContext: {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sh"]
-          args: ["-c", "cat -"]
+          command: {{- toYaml .Values.image.command | nindent 12 }}
+          args: {{- toYaml .Values.image.args | nindent 12 }}
+          env: {{- toYaml .Values.image.env | nindent 12 }}
           tty: true
           volumeMounts:
             - name: docker-sock

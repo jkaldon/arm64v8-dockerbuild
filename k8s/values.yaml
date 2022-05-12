@@ -8,7 +8,21 @@ image:
   repository: jkaldon/arm64v8-dockerbuild
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "alpine3.13-1"
+  tag: "alpine3.15-2"
+  command:
+    - "/bin/sh"
+  args:
+    - "-c"
+    - "/usr/bin/screen -h 5000 -d -m -l -s /bin/bash && cat"
+  env:
+    - name: "IGNOREEOF"
+      value: "10"
+    - name: "PS1"
+      value: '\h:\W\$ '
+  resources:
+    requests:
+      memory: 6Gi
+      cpu: 2000m
 
 persistence:
   enabled: true
@@ -27,14 +41,15 @@ persistence:
   annotations: {}
   accessMode: "ReadWriteOnce"
   size: "8Gi"
-  volumes:
-  #  - name: rootHome
-  #    persistentVolumeClaim:
-  #      claimName: {{ template "arm64-dockerbuild.fullname" . }}
   mounts:
-  #  - mountPath: /root
-  #    name: rootHome
-  #    readOnly: false
+    - name: projects-nfs
+      mountPath: /root/Projects
+  volumes:
+    - name: projects-nfs
+      nfs: 
+        # URL for the NFS server
+        server: 192.168.1.2
+        path: /nfs/Projects
 
 imagePullSecrets: []
 nameOverride: ""
