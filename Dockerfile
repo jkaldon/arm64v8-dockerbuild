@@ -15,6 +15,7 @@ RUN apk add --no-cache \
              git \
              vim && \
     curl 'https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3' | bash && \
-    curl -Lo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    curl -Lo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    chmod a+x /usr/local/bin/kubectl
 
 WORKDIR /root

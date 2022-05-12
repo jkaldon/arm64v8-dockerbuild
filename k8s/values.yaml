@@ -8,7 +8,7 @@ image:
   repository: jkaldon/arm64v8-dockerbuild
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "alpine3.15-2"
+  tag: "alpine3.15-3"
   command:
     - "/bin/sh"
   args:
