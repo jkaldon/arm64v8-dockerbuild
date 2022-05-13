@@ -1,7 +1,7 @@
 #!/bin/sh
 set -x
 
-DOCKER_TAG=alpine3.15-3
+DOCKER_TAG=alpine3.15-4
 
 docker build --progress plain -t "jkaldon/arm64v8-dockerbuild:${DOCKER_TAG}" .
 
